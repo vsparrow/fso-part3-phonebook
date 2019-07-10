@@ -1,0 +1,11 @@
+{
+  "name": "fso-part3-phonebook",
+  "version": "1.0.0",
+  "description": "Exercises for part3 of the Fullstackopen course from U of Helsinki\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "vsparrow",
+  "license": "ISC"
+}
