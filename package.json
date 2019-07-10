@@ -1,11 +1,19 @@
 {
   "name": "fso-part3-phonebook",
   "version": "1.0.0",
-  "description": "Exercises for part3 of the Fullstackopen course from U of Helsinki\"",
+  "description": "Exercises for part3 of the Fullstackopen course from U of Helsinki",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "watch": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "vsparrow",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
 }
