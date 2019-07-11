@@ -33,6 +33,14 @@ app.get('/api/persons', (req,res)=>{
     res.json(persons)
 })
 
+app.get('/info',(req,res)=>{
+    const time = new Date()
+    const peopleCount = persons.length
+    let resString = `<h2>Phonebook has info for ${peopleCount} people</h2>`
+    resString += `<h2>${time}<h2>`
+    res.send(resString)
+}) // info
+
 app.get('/',(req,res)=>{
     res.send('<h1>Hello World</h1>')
 })
