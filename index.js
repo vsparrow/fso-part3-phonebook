@@ -28,6 +28,13 @@ let persons = [
       "id": 5
     }
   ]
+
+const generateId = () => {
+    const id = Math.floor(Math.random() * Math.floor(100))
+    if ( persons.some(p => p.id === id) ) { return generateId()}
+    return id
+}
+  
 // *****************************************************************************
 app.get('/api/persons/:id',(req,res)=>{
     const id = Number(req.params.id)
@@ -47,6 +54,13 @@ app.delete('/api/persons/:id',(req,res)=>{
     persons = persons.filter(p => p.id !== id)
     console.log(persons)
     res.json({})
+})
+
+app.post('/api/persons', (req,res)=>{
+    const id = generateId()
+    console.log(id)
+    res.json({"id":id})
+    
 })
 // *****************************************************************************
 app.get('/info',(req,res)=>{
