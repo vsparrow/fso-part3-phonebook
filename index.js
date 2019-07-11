@@ -37,6 +37,17 @@ const generateId = () => {
     if ( persons.some(p => p.id === id) ) { return generateId()}
     return id
 }
+
+//input is an object
+const checkInput = (input) => {
+    // The name or number is missing
+    if(!input.name || input.name.length === 0) { return 'Api requires a name'}
+    if(!input.number || input.number.length === 0) { return 'Api requires a number'}
+    // The name already exists in the phonebook
+    if(persons.some(p => p.name === input.name)) {return 'name must be unique'}
+    //input was valid
+    return null
+}
   
 // *****************************************************************************
 app.get('/api/persons/:id',(req,res)=>{
@@ -62,7 +73,12 @@ app.delete('/api/persons/:id',(req,res)=>{
 app.post('/api/persons', (req,res)=>{
     const id = generateId()
     
-    const person = {name: req.body.name, number: req.body.number,  id: id}
+    // const person = {name: req.body.name, number: req.body.number,  id: id}
+    const person = {name: req.body.name, number: req.body.number}
+    const isError = checkInput(person)
+    if(isError) {return res.status(400).json({"error": isError})}
+    
+    person.id = id
     persons.push(person)
     // console.log(id, req.body, req.body.name, req.body.number)
     // console.log(person)
