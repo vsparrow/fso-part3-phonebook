@@ -87,6 +87,24 @@ app.delete('/api/persons/:id', (req, res) => {
     res.json({});
 });
 
+app.put('/api/persons/:id', (req, res) => {      //only setup to update number
+    const id = Number(req.params.id);
+	const idx = persons.findIndex(p => p.id === id)
+	const person = persons[idx]
+	// console.log("idx is", idx)
+	// console.log("person is", person)
+	// console.log("req.body.number is ", req.body.number)
+	
+	if (person === undefined) {
+        return res.status(400).json({ error: 'User id not found' });
+    }
+	if(!req.body.number || req.body.number.length === 0) {
+	     return res.status(400).json({ error: 'Number must be one digit or greater' });
+	}
+	persons[idx].number = req.body.number
+	res.json(persons[idx])		//return person to poster
+});
+
 app.post('/api/persons', (req, res) => {
     const id = generateId();
 
