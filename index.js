@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors')
 const app = express();
 
+app.use(express.static('build'))
 app.use(cors())
 app.use(bodyParser.json());
 morgan.token('bodydata', (req, res) => {
@@ -132,9 +133,10 @@ app.get('/info', (req, res) => {
     res.send(resString);
 }); // info
 // *****************************************************************************
-app.get('/', (req, res) => {
+/* app.get('/', (req, res) => {				//not needed after import build
     res.send('<h1>Hello World</h1>');
 });
+	*/
 // *****************************************************************************
 
 const PORT = process.env.PORT || 3001;
