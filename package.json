@@ -1,12 +1,16 @@
 {
-  "name": "fso-part3-phonebook",
+  "name": "fso-phonebook-backend",
   "version": "1.0.0",
   "description": "Exercises for part3 of the Fullstackopen course from U of Helsinki",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "watch": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"build:ui": "rm -rf build && cd ../fso-phonebook-frontend && npm run build --prod && cp -r build ../fso-phonebook-backend",  
+	"deploy": "git push heroku",  
+	"deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",  
+	"logs:prod": "heroku logs --tail"  
   },
   "author": "vsparrow",
   "license": "ISC",
