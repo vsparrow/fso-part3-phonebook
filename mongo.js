@@ -1,19 +1,15 @@
 const mongoose = require('mongoose')
-//cmd inputs 
-// node mongo.js yourpassword Anna 040-1234556
-// ******************************************** INPUT HANDLING START
+// ******************************************** INPUT HANDLING 
 const length = process.argv.length
 let getAll = false
-console.log(`length is ${length}`)
-if(length === 3){ 
-	//return all phonebook entries
+if(length === 3){ 	//return all phonebook entries
 	getAll = true
 }
 else if(length < 5) {
 	console.log('usage: node mongo.js yourpassword name number')	
 	process.exit(1)
 }
-// ******************************************** INPUT HANDLING END
+
 // ******************************************** CONNNECT TO DB START
 const password = process.argv[2]
 const url = `mongodb+srv://fullstack:${password}@cluster0-mzgxn.mongodb.net/persons-app?retryWrites=true&w=majority
@@ -38,8 +34,8 @@ if(!getAll){
 		mongoose.connection.close()
 	})
 }
+// ******************************************** GET PERSONS
 if(getAll){
-	// console.log('cannot get persons at the moment');
 	Person.find({}).then(res => {
 		res.forEach(person => {
 			console.log(person)
