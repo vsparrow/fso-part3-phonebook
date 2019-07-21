@@ -39,6 +39,11 @@ if(!getAll){
 	})
 }
 if(getAll){
-	console.log('cannot get persons at the moment');
-	mongoose.connection.close()
+	// console.log('cannot get persons at the moment');
+	Person.find({}).then(res => {
+		res.forEach(person => {
+			console.log(person)
+		})
+		mongoose.connection.close()	
+	})
 }
