@@ -37,8 +37,9 @@ if(!getAll){
 // ******************************************** GET PERSONS
 if(getAll){
 	Person.find({}).then(res => {
+		console.log("phonebook:")
 		res.forEach(person => {
-			console.log(person)
+			console.log(`${person.name} ${person.number}`)
 		})
 		mongoose.connection.close()	
 	})
