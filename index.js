@@ -4,6 +4,10 @@ const bodyParser = require('body-parser');
 const cors = require('cors')
 const app = express();
 
+require('dotenv').config() 
+const mongoose = require('mongoose')
+const Person = require('./models/person')
+
 app.use(express.static('build'))
 app.use(cors())
 app.use(bodyParser.json());
@@ -12,33 +16,33 @@ morgan.token('bodydata', (req, res) => {
 });
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :bodydata'));
 
-let persons = [
-    {
-        name: 'Arto Hellas',
-        number: '040-123456',
-        id: 1
-    },
-    {
-        name: 'Ada Lovelace',
-        number: '39-44-5323523',
-        id: 2
-    },
-    {
-        name: 'Dan Abramov',
-        number: '12-43-234345',
-        id: 3
-    },
-    {
-        name: 'Mary Poppendieck',
-        number: '39-23-6423122',
-        id: 4
-    },
-    {
-        name: 'Maz Jabroni',
-        number: '39-22-6457522',
-        id: 5
-    }
-];
+// let persons = [
+//     {
+//         name: 'Arto Hellas',
+//         number: '040-123456',
+//         id: 1
+//     },
+//     {
+//         name: 'Ada Lovelace',
+//         number: '39-44-5323523',
+//         id: 2
+//     },
+//     {
+//         name: 'Dan Abramov',
+//         number: '12-43-234345',
+//         id: 3
+//     },
+//     {
+//         name: 'Mary Poppendieck',
+//         number: '39-23-6423122',
+//         id: 4
+//     },
+//     {
+//         name: 'Maz Jabroni',
+//         number: '39-22-6457522',
+//         id: 5
+//     }
+// ];
 
 const generateId = () => {
     const id = Math.floor(Math.random() * Math.floor(100));
@@ -78,7 +82,25 @@ app.get('/api/persons/:id', (req, res) => {
 });
 
 app.get('/api/persons', (req, res) => {
-    res.json(persons);
+    // res.json(persons); //old way with local persons variable
+	Person.find({}).then(result => {
+		// res.json(result.map( person =>   {"name": person.name, "number": person.number}  ))
+		// res.json(result.map( person =>  console.log(`"name": ${person.name}, "number": ${person.number}`)   ))
+		// return result.map( person =>  console.log(`"name": ${person.name}, "number": ${person.number}`))
+		return result.map( person => { return {"name" : person.name, "number" : person.number }  } )
+		
+		
+	})
+	.then(map => res.json(map))
+	
+	// Person.find({}).then(res => {
+// 		console.log("phonebook:")
+// 		res.forEach(person => {
+// 			console.log(`${person.name} ${person.number}`)
+// 		})
+// 		mongoose.connection.close()	
+// 	})
+
 });
 
 app.delete('/api/persons/:id', (req, res) => {
