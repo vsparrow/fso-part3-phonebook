@@ -71,37 +71,39 @@ const checkInput = input => {
 
 // *****************************************************************************
 app.get('/api/persons/:id', (req, res) => {
-    const id = Number(req.params.id);
-    const person = persons.find(p => p.id === id);
-    if (person === undefined) {
-        return res.status(400).json({ error: 'User id not found' });
-    }
+    //OLD WAY
+	// const id = Number(req.params.id);
+    // const person = persons.find(p => p.id === id);
+    // if (person === undefined) {
+    //     return res.status(400).json({ error: 'User id not found' });
+    // }
 
-    console.log(id, person);
-    res.send(person);
-});
+    // console.log(id, person);
+    // res.send(person);
+	const id = req.params.id;
+	console.log("id is ", id)
+	Person.find({"_id": id})
+	// .then(result => console.log(result))
+	.then(result => { 
+			const person = result[0]
+			const found =  {"name": person.name, "number": person.number, "id": person._id}
+			res.json(found)
+		}
+	)
+	.catch(err => {
+		console.log("User not found")
+		// console.log(err.message)
+		res.status(400).json({ error: 'User id not found' })
+	})
+}); //GET PERSON
 
 app.get('/api/persons', (req, res) => {
-    // res.json(persons); //old way with local persons variable
-	Person.find({}).then(result => {
-		// res.json(result.map( person =>   {"name": person.name, "number": person.number}  ))
-		// res.json(result.map( person =>  console.log(`"name": ${person.name}, "number": ${person.number}`)   ))
-		// return result.map( person =>  console.log(`"name": ${person.name}, "number": ${person.number}`))
-		return result.map( person => { return {"name" : person.name, "number" : person.number }  } )
-		
-		
+	Person.find({})
+	.then(result => {
+		return result.map( person => { return {"name" : person.name, "number" : person.number, id: person.id }  } )
 	})
 	.then(map => res.json(map))
-	
-	// Person.find({}).then(res => {
-// 		console.log("phonebook:")
-// 		res.forEach(person => {
-// 			console.log(`${person.name} ${person.number}`)
-// 		})
-// 		mongoose.connection.close()	
-// 	})
-
-});
+}); //GET PERSONS
 
 app.delete('/api/persons/:id', (req, res) => {
     const id = Number(req.params.id);
