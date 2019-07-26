@@ -131,22 +131,27 @@ app.put('/api/persons/:id', (req, res) => {      //only setup to update number
 });
 
 app.post('/api/persons', (req, res) => {
-    const id = generateId();
+	
+	const person = new Person({
+		name: req.body.name,
+		number: req.body.number,
+	})
+	//make sure post is working then work on error handling
+	// const isError = checkInput(person);
+    // if (isError) {
+    //     return res.status(400).json({ error: isError });
+    // }
 
-    // const person = {name: req.body.name, number: req.body.number,  id: id}
-    const person = { name: req.body.name, number: req.body.number };
-    const isError = checkInput(person);
-    if (isError) {
-        return res.status(400).json({ error: isError });
-    }
-
-    person.id = id;
-    persons.push(person);
-    // console.log(id, req.body, req.body.name, req.body.number)
-    // console.log(person)
-    // console.log(persons)
-    // res.json({"id":id})
-    res.json(person);
+	person.save()
+	.then(result => {
+		console.log("Person saved!")
+		console.log(result)
+		return res.status(200).json({name: result.name, number: result.number, id: result.id})
+	})
+	.catch(error => {
+		console.log(error.message)
+		return res.status(400).json({ error: error.message });
+	})
 });
 // *****************************************************************************
 app.get('/info', (req, res) => {
