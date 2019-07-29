@@ -87,18 +87,25 @@ app.delete('/api/persons/:id', (req, res) => {
 });
 
 app.put('/api/persons/:id', (req, res) => {      //only setup to update number
-    const id = Number(req.params.id);
-	const idx = persons.findIndex(p => p.id === id)
-	const person = persons[idx]
+    const id = (req.params.id);
+	const name = req.body.name
+	const number = req.body.number
+    // const id = Number(req.params.id);
+	// const idx = persons.findIndex(p => p.id === id)
+	// const person = persons[idx]
 	
-	if (person === undefined) {
-        return res.status(400).json({ error: 'User id not found' });
-    }
-	if(!req.body.number || req.body.number.length === 0) {
-	     return res.status(400).json({ error: 'Number must be one digit or greater' });
-	}
-	persons[idx].number = req.body.number
-	res.json(persons[idx])		//return person to poster
+	if (name === undefined ){return res.status(400).json({ error: 'name required' });}
+	if (number === undefined) {return res.status(400).json({ error: 'number required' });}
+	const person = {name: name, number: number}
+	// if(!req.body.number || req.body.number.length === 0) {
+	//      return res.status(400).json({ error: 'Number must be one digit or greater' });
+	// }
+	// persons[idx].number = req.body.number
+	// res.json(persons[idx])		//return person to poster
+	console.log(id, name, number)
+	Person.findByIdAndUpdate(id, person, {new: true})
+	.then( updatedPerson => res.json(updatedPerson.toJSON()))
+	.catch(error => res.json({error: error.message}))
 });
 
 app.post('/api/persons', (req, res) => {
