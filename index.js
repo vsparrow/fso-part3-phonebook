@@ -16,33 +16,6 @@ morgan.token('bodydata', (req, res) => {
 });
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :bodydata'));
 
-// let persons = [
-//     {
-//         name: 'Arto Hellas',
-//         number: '040-123456',
-//         id: 1
-//     },
-//     {
-//         name: 'Ada Lovelace',
-//         number: '39-44-5323523',
-//         id: 2
-//     },
-//     {
-//         name: 'Dan Abramov',
-//         number: '12-43-234345',
-//         id: 3
-//     },
-//     {
-//         name: 'Mary Poppendieck',
-//         number: '39-23-6423122',
-//         id: 4
-//     },
-//     {
-//         name: 'Maz Jabroni',
-//         number: '39-22-6457522',
-//         id: 5
-//     }
-// ];
 
 const generateId = () => {
     const id = Math.floor(Math.random() * Math.floor(100));
@@ -71,19 +44,9 @@ const checkInput = input => {
 
 // *****************************************************************************
 app.get('/api/persons/:id', (req, res) => {
-    //OLD WAY
-	// const id = Number(req.params.id);
-    // const person = persons.find(p => p.id === id);
-    // if (person === undefined) {
-    //     return res.status(400).json({ error: 'User id not found' });
-    // }
-
-    // console.log(id, person);
-    // res.send(person);
 	const id = req.params.id;
 	console.log("id is ", id)
 	Person.find({"_id": id})
-	// .then(result => console.log(result))
 	.then(result => { 
 			const person = result[0]
 			const found =  {"name": person.name, "number": person.number, "id": person._id}
@@ -92,7 +55,6 @@ app.get('/api/persons/:id', (req, res) => {
 	)
 	.catch(err => {
 		console.log("User not found")
-		// console.log(err.message)
 		res.status(400).json({ error: 'User id not found' })
 	})
 }); //GET PERSON
@@ -116,9 +78,6 @@ app.put('/api/persons/:id', (req, res) => {      //only setup to update number
     const id = Number(req.params.id);
 	const idx = persons.findIndex(p => p.id === id)
 	const person = persons[idx]
-	// console.log("idx is", idx)
-	// console.log("person is", person)
-	// console.log("req.body.number is ", req.body.number)
 	
 	if (person === undefined) {
         return res.status(400).json({ error: 'User id not found' });
