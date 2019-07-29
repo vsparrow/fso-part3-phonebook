@@ -7,6 +7,13 @@ const app = express();
 require('dotenv').config() 
 const mongoose = require('mongoose')
 const Person = require('./models/person')
+// **************************************  middlware definitions
+//next refers to the next middleware
+const errorHandler = (error, request, response, next) => {
+	console.log(error.message)
+	next(error)	
+}
+// **************************************
 
 app.use(express.static('build'))
 app.use(cors())
@@ -15,7 +22,7 @@ morgan.token('bodydata', (req, res) => {
     return JSON.stringify(req.body);
 });
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :bodydata'));
-
+app.use(errorHandler)
 
 const generateId = () => {
     const id = Math.floor(Math.random() * Math.floor(100));
