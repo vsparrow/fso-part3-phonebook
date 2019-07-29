@@ -140,6 +140,7 @@ app.get('/info', (req, res) => {
 		responseData  += `<h2>${time}</h2>`;
 		res.send(responseData)
 	})
+	.catch(error => res.send(`<h2>There was an error</h2>${error.message}`))
 }); // info
 // *****************************************************************************
 /* app.get('/', (req, res) => {				//not needed after import build
