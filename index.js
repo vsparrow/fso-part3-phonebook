@@ -134,10 +134,12 @@ app.post('/api/persons', (req, res) => {
 // *****************************************************************************
 app.get('/info', (req, res) => {
     const time = new Date();
-    const peopleCount = persons.length;
-    let resString = `<h2>Phonebook has info for ${peopleCount} people</h2>`;
-    resString += `<h2>${time}<h2>`;
-    res.send(resString);
+	Person.count()
+	.then(countOfPersons => {
+		let responseData = `<h2>Phonebook has info for ${countOfPersons} people</h2>`;
+		responseData  += `<h2>${time}</h2>`;
+		res.send(responseData)
+	})
 }); // info
 // *****************************************************************************
 /* app.get('/', (req, res) => {				//not needed after import build
