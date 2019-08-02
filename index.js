@@ -105,7 +105,7 @@ app.put('/api/persons/:id', (req, res) => {      //only setup to update number
 	console.log(id, name, number)
 	Person.findByIdAndUpdate(id, person, {new: true})
 	.then( updatedPerson => res.json(updatedPerson.toJSON()))
-	.catch(error => res.json({error: error.message}))
+	.catch(error => res.status(400).json({error: error.message}))
 });
 
 app.post('/api/persons', (req, res) => {
